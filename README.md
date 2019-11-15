@@ -7,20 +7,32 @@ The functionality of the app conforms to the prompt. However there are a few thi
 ## Run
 Using `Docker`:
 
+Setup the database
+
 ```
-# host the local server no PORT 3000
-1. docker-compose up -d
-# run this once to setup/seed the database:
-2. docker-compose run app rails db:create db:setup
+$ docker-compose run app rails db:create db:setup
 ```
 
-By default the app will be served over localhost:3000
+Run the server
+
+```
+$ docker-compose up
+```
+
+By default the app will be served over `localhost:3000`
 
 ## Run Tests
 
-```ruby
-docker-compose up -d
-docker-compose run app rails test
+Setup test database
+
+```
+$ docker-compose rails db:create db:migrate db:test:prepare
+```
+
+Run the tests
+
+```
+$ docker-compose run app rails test
 ```
 
 # Documentation

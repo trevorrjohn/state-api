@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    image: postgres:12
+
+  app:
+    build: .
+    command: bin/rails server --port 3000 --binding 0.0.0.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db

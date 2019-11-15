@@ -12,6 +12,18 @@ module Api
         end
       end
 
+      def update
+        address = Address.find(params[:id])
+
+        if address.update(address_params)
+          render status: :ok, json: address.as_json
+        else
+          render status: :unprocessable_entity, json: {
+            errors: address.errors.full_messages
+          }
+        end
+      end
+
       def destroy
         address = Address.find(params[:id])
         address.destroy

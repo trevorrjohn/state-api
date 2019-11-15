@@ -52,6 +52,37 @@ module Api
         errors = { errors: ["Name can't be blank"] }
         assert_equal errors.to_json, @response.body
       end
+
+      test "updating a valid address" do
+        address = addresses(:one)
+        body = {
+          address: {
+            name: "New Name"
+          }
+        }
+
+        put api_v1_address_url(address, params: body)
+
+        assert_response :ok
+        assert_equal address.reload.as_json, JSON.parse(@response.body)
+        assert_equal "New Name", address.name
+      end
+
+      test "updating with invalid params does not update address" do
+        address = addresses(:one)
+        body = {
+          address: {
+            name: ""
+          }
+        }
+
+        put api_v1_address_url(address, params: body)
+
+        assert_response :unprocessable_entity
+        errors = { errors: ["Name can't be blank"] }
+        assert_equal errors.to_json, @response.body
+        assert_not_equal "", address.reload.name
+      end
     end
   end
 end

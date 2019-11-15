@@ -83,6 +83,17 @@ module Api
         assert_equal errors.to_json, @response.body
         assert_not_equal "", address.reload.name
       end
+
+      test "getting addresses by country and state" do
+        home, work = addresses(:one, :two)
+
+        get api_v1_addresses_url(params: { country: "USA", state: "NY" })
+
+        assert_response :ok
+        json = JSON.parse(@response.body)
+        assert_equal 2, json.size
+        assert_empty json.map { |x| x["id"] } - [home.id, work.id]
+      end
     end
   end
 end

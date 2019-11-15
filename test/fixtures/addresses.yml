@@ -13,3 +13,10 @@ two:
   city: New York
   state: NY
   country: USA
+
+three:
+  name: Country
+  street: 1 Santa Monica Blvd
+  city: Santa Monica
+  state: CA
+  country: USA

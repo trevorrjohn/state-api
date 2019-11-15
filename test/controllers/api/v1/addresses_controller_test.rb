@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 module Api
   module V1
@@ -20,37 +20,47 @@ module Api
       end
 
       test "create an address" do
-        body = {
-          address: {
-            name: "Home",
-            street: "24 Park Ave",
-            city: "New York",
-            state: "NY",
-            country: "USA"
+        state_validator = Minitest::Mock.new
+        state_validator.expect(:valid?, true)
+        StateValidator.stub(:new, state_validator) do
+          body = {
+            address: {
+              name: "Home",
+              street: "24 Park Ave",
+              city: "New York",
+              state: "NY",
+              country: "USA"
+            }
           }
-        }
-        post api_v1_addresses_url(params: body)
+          post api_v1_addresses_url(params: body)
 
-        assert_response :created
-        address = Address.order(:created_at).last
-        assert_equal address.to_json, @response.body
+          assert_response :created
+          address = Address.order(:created_at).last
+          assert_equal address.to_json, @response.body
+        end
+        state_validator.verify
       end
 
       test "bad address is not created" do
-        body = {
-          address: {
-            name: "",
-            street: "24 Park Ave",
-            city: "New York",
-            state: "NY",
-            country: "USA"
+        state_validator = Minitest::Mock.new
+        state_validator.expect(:valid?, true)
+        StateValidator.stub(:new, state_validator) do
+          body = {
+            address: {
+              name: "",
+              street: "24 Park Ave",
+              city: "New York",
+              state: "NY",
+              country: "USA"
+            }
           }
-        }
-        post api_v1_addresses_url(params: body)
+          post api_v1_addresses_url(params: body)
 
-        assert_response :unprocessable_entity
-        errors = { errors: ["Name can't be blank"] }
-        assert_equal errors.to_json, @response.body
+          assert_response :unprocessable_entity
+          errors = { errors: ["Name can't be blank"] }
+          assert_equal errors.to_json, @response.body
+        end
+        state_validator.verify
       end
 
       test "updating a valid address" do

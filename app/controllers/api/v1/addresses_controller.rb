@@ -2,6 +2,7 @@ module Api
   module V1
     class AddressesController < ApplicationController
       before_action :validate_query_params!, only: :index
+
       def index
         addresses = Address
           .where(country: params[:country].upcase.strip)

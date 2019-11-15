@@ -9,22 +9,18 @@ Using `Docker`:
 
 ```
 # host the local server no PORT 3000
-1. docker-compose up
-# in another terminal run this once to setup the database:
+1. docker-compose up -d
+# run this once to setup/seed the database:
 2. docker-compose run app rails db:create db:setup
 ```
 
 By default the app will be served over localhost:3000
 
 ## Run Tests
-You have a local installation of Ruby 2.6.3 and
-postgres (10+).
 
 ```ruby
-gem install bundler:2.0.1
-bundle # install dependencies
-rails db:create db:setup # create and run migrations on database
-bundle exec rails test # run the tests
+docker-compose up -d
+docker-compose run app rails test
 ```
 
 # Documentation

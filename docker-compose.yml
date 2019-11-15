@@ -12,3 +12,6 @@ services:
       - .:/app
     depends_on:
       - db
+    environment:
+      - DB_USER=postgres
+      - DB_HOST=db
